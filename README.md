@@ -40,7 +40,7 @@ npm run ios
 
 ## Download APK
 
-📱 **[Download Android APK](https://github.com/SuhelIndiIt/assignment/releases/latest/download/app-release.apk)**
+📱 **[Download Android APK](https://github.com/SuhelIndiIt/assignment/blob/main/app-release.apk)**
 
 _Note: You'll need to enable "Install from unknown sources" in your Android settings._
 
