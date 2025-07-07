@@ -1,97 +1,203 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Crypto Price Tracker
 
-# Getting Started
+A React Native mobile application that connects to Binance WebSocket API to display real-time cryptocurrency prices with live updates, price charts, and color-coded price changes.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- 🔌 **Real-time WebSocket Connection** to Binance API
+- 📊 **Live Price Updates** for popular cryptocurrencies (BTC, ETH, ADA)
+- 🎨 **Color-coded Price Changes** (Green for increases, Red for decreases)
+- 📈 **Interactive Price Charts** with line graph visualization
+- 📱 **Modern UI** with card-based design and smooth animations
+- 🔄 **Auto-reconnection** with exponential backoff
+- 📍 **Connection Status Indicator** showing WebSocket state
+- ⏰ **Timestamp Display** for each price update
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Screenshots
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+The app features a clean, modern interface with:
 
-```sh
-# Using npm
-npm start
+- Real-time price cards with color-coded indicators
+- Interactive charts for detailed price analysis
+- Connection status indicator
+- Smooth transitions between list and chart views
 
-# OR using Yarn
-yarn start
-```
+## Prerequisites
 
-## Step 2: Build and run your app
+Before running this application, make sure you have the following installed:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+- Node.js (>= 18)
+- React Native CLI
+- Android Studio (for Android development)
+- Xcode (for iOS development, macOS only)
+- JDK 11 or newer
+
+## Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd testTask
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Install iOS dependencies** (macOS only)
+   ```bash
+   cd ios && pod install && cd ..
+   ```
+
+## Running the Application
 
 ### Android
 
-```sh
-# Using npm
-npm run android
+1. **Start Metro bundler**
 
-# OR using Yarn
-yarn android
+   ```bash
+   npm start
+   ```
+
+2. **Run on Android device/emulator**
+   ```bash
+   npm run android
+   ```
+
+### iOS (macOS only)
+
+1. **Start Metro bundler**
+
+   ```bash
+   npm start
+   ```
+
+2. **Run on iOS simulator/device**
+   ```bash
+   npm run ios
+   ```
+
+## Usage
+
+1. **Launch the app** - The app will automatically connect to Binance WebSocket API
+2. **View real-time prices** - See live cryptocurrency prices with color-coded changes
+3. **Tap on any price card** - View detailed price chart for that cryptocurrency
+4. **Navigate back** - Use the "Back to List" button to return to the price list
+5. **Monitor connection** - Check the connection status indicator at the top
+
+## Technical Details
+
+### WebSocket Implementation
+
+- Connects to Binance WebSocket API (`wss://stream.binance.com:9443/ws/!ticker@arr`)
+- Filters for popular cryptocurrencies (BTC, ETH, ADA)
+- Implements auto-reconnection with exponential backoff
+- Handles connection errors gracefully
+
+### Data Structure
+
+```typescript
+interface PriceData {
+  symbol: string;
+  price: string;
+  priceChange: string;
+  priceChangePercent: string;
+  timestamp: number;
+  isPositive: boolean;
+}
 ```
 
-### iOS
+### Components
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+- **WebSocketService**: Handles WebSocket connections and data processing
+- **PriceCard**: Displays individual cryptocurrency price information
+- **PriceChart**: Shows price data in line chart format
+- **ConnectionStatus**: Displays WebSocket connection state
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## Dependencies
 
-```sh
-bundle install
-```
+- `react-native`: Core React Native framework
+- `react-native-chart-kit`: For price chart visualization
+- `react-native-svg`: Required for chart rendering
+- `@react-native-async-storage/async-storage`: For data persistence (future use)
+- `react-native-vector-icons`: For UI icons (future use)
 
-Then, and every time you update your native dependencies, run:
+## API Reference
 
-```sh
-bundle exec pod install
-```
+The app uses the Binance WebSocket API:
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+- **Endpoint**: `wss://stream.binance.com:9443/ws/!ticker@arr`
+- **Data Format**: 24hr ticker statistics for all symbols
+- **Update Frequency**: Real-time updates
+- **Rate Limits**: None for public WebSocket streams
 
-```sh
-# Using npm
-npm run ios
+## Building APK
 
-# OR using Yarn
-yarn ios
-```
+To create an APK file for distribution:
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+1. **Generate a signed APK**
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+   ```bash
+   cd android
+   ./gradlew assembleRelease
+   ```
 
-## Step 3: Modify your app
+2. **Find the APK file**
+   The APK will be located at:
+   ```
+   android/app/build/outputs/apk/release/app-release.apk
+   ```
 
-Now that you have successfully run the app, let's make changes!
+## Troubleshooting
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Common Issues
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+1. **Metro bundler issues**
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+   ```bash
+   npx react-native start --reset-cache
+   ```
 
-## Congratulations! :tada:
+2. **Android build issues**
 
-You've successfully run and modified your React Native App. :partying_face:
+   ```bash
+   cd android && ./gradlew clean && cd ..
+   ```
 
-### Now what?
+3. **iOS build issues**
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+   ```bash
+   cd ios && pod deintegrate && pod install && cd ..
+   ```
 
-# Troubleshooting
+4. **WebSocket connection issues**
+   - Check internet connectivity
+   - Verify Binance API availability
+   - Check firewall settings
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+### Debug Mode
 
-# Learn More
+Enable debug mode by shaking the device or pressing `Cmd+D` (iOS) / `Cmd+M` (Android) to access React Native debug menu.
 
-To learn more about React Native, take a look at the following resources:
+## Contributing
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support or questions, please open an issue in the repository.
+
+---
+
+**Note**: This application is for educational purposes and uses public APIs. Please ensure compliance with Binance's terms of service when using their API.
