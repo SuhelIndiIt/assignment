@@ -1,6 +1,5 @@
 import {
   Alert,
-  Dimensions,
   FlatList,
   Modal,
   SafeAreaView,
@@ -12,14 +11,14 @@ import {
   View,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import WebSocketService, { PriceData } from './src/services/websocket';
+import WebSocketService, { PriceData } from '../services/websocket';
 
-import ConnectionStatus from './src/components/ConnectionStatus';
-import { FIXED_SYMBOLS } from './src/services/FIXED_SYMBOLS';
-import PriceCard from './src/components/PriceCard';
-import PriceChart from './src/components/PriceChart';
+import ConnectionStatus from '../components/ConnectionStatus';
+import { FIXED_SYMBOLS } from '../services/FIXED_SYMBOLS';
+import PriceCard from '../components/PriceCard';
+import PriceChart from '../components/PriceChart';
 
-const App = () => {
+const CryptoTracker = () => {
   const [priceData, setPriceData] = useState<PriceData[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [showChartModal, setShowChartModal] = useState(false);
@@ -107,6 +106,7 @@ const App = () => {
       );
     }
 
+    console.log('Chart data:', selectedPriceData);
     return <PriceChart data={selectedPriceData} symbol={selectedSymbol} />;
   };
 
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   modalContainer: {
-    height: Dimensions.get('screen').height / 2,
+    height: '40%',
     width: '100%',
     backgroundColor: '#ffffff',
     borderRadius: 10,
@@ -261,4 +261,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default CryptoTracker;

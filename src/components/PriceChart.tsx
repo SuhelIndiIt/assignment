@@ -1,4 +1,10 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { LineChart } from 'react-native-chart-kit';
 import { PriceData } from '../services/websocket';
@@ -24,6 +30,10 @@ const PriceChart: React.FC<PriceChartProps> = ({ data, symbol }) => {
   const chartContainerPadding = 32;
   const chartWidth = screenWidth - modalWrapperPadding - chartContainerPadding;
 
+  const current = parseFloat(data[data.length - 1].price);
+  const previous = parseFloat(data[data.length - 2].price);
+  const change = ((current - previous) / previous) * 100;
+
   const chartData = {
     labels: data.slice(-10).map((_, index) => `${index + 1}`),
     datasets: [
@@ -37,6 +47,12 @@ const PriceChart: React.FC<PriceChartProps> = ({ data, symbol }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.priceChangeContainer}>
+        <Text style={styles.changeTxt}>Previous Price : {previous}</Text>
+        <Text style={styles.changeTxt}>Current Price : {current}</Text>
+        <Text style={styles.changeTxt}>Price Diff : {change}%</Text>
+      </View>
+
       <LineChart
         data={chartData}
         width={chartWidth}
@@ -69,6 +85,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
+    paddingTop: 6,
+  },
+  priceChangeContainer: {
+    backgroundColor: '#f0f0f0',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  changeTxt: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    paddingVertical: 3,
   },
   title: {
     fontSize: 18,

@@ -34,7 +34,6 @@ class WebSocketService {
         try {
           const data = JSON.parse(event.data);
           if (Array.isArray(data)) {
-            console.log(data);
             const priceData: PriceData[] = data
               .filter((item: any) => {
                 const symbol = item.s || '';
@@ -76,9 +75,6 @@ class WebSocketService {
   private attemptReconnect() {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
-      console.log(
-        `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`,
-      );
 
       setTimeout(() => {
         this.connectWebSocket();
